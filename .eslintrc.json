@@ -1,3 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "root": true,
+  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "prefer-arrow-callback": ["error"],
+    "prefer-template": ["error"]
+  }
 }

@@ -1,0 +1,7 @@
+{
+  "cSpell.words": ["selectednode", "tiptap"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  }
+}
