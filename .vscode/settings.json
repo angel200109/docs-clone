@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["selectednode", "tiptap"],
+  "cSpell.words": [
+    "DEFUALT",
+    "Googledocs",
+    "liveblocks",
+    "Nuqs",
+    "selectednode",
+    "tiptap"
+  ],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"

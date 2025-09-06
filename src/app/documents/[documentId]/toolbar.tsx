@@ -25,6 +25,7 @@ import {
   AlignButton,
   ListButton,
   FontSizeButton,
+  LineHeightButton
 } from "@/app/documents/components/toolbarButton";
 
 interface toolbarButtonProps {
@@ -54,7 +55,6 @@ const ToolbarButton = ({
 
 export const Toolbar = () => {
   const { editor } = useEditorState();
-  // console.log("Toolbar Editor", { editor });
   const sections: {
     label: string;
     icon: LucideIcon;
@@ -113,8 +113,8 @@ export const Toolbar = () => {
         {
           label: "Comment",
           icon: MessageSquarePlusIcon,
-          isActive: editor?.isActive("underline"),
-          onClick: () => console.log("comment"),
+          isActive: editor?.isActive("liveblocksCommentMark"),
+          onClick: () => editor?.chain().focus().addPendingComment().run(),
         },
         {
           label: "List Todo",
@@ -139,6 +139,7 @@ export const Toolbar = () => {
       <FontFamilyButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <HeadingLevelButton />
+      <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       <FontSizeButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {sections[1].map((item) => {
@@ -151,6 +152,7 @@ export const Toolbar = () => {
       <ImageButton />
       <AlignButton />
       <ListButton />
+      <LineHeightButton />
       <Separator orientation="vertical" className="h-6 bg-neutral-300" />
       {sections[2].map((item) => {
         return <ToolbarButton key={item.label} {...item} />;

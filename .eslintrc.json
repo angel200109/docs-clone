@@ -5,6 +5,9 @@
     "semi": ["error", "always"],
     "quotes": ["error", "double"],
     "prefer-arrow-callback": ["error"],
-    "prefer-template": ["error"]
+    "prefer-template": ["error"],
+    "rules": {
+      "no-unused-vars": "off"
+    }
   }
 }

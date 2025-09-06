@@ -1,5 +1,5 @@
 "use client";
-
+import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TaskItem from "@tiptap/extension-task-item";
@@ -18,11 +18,29 @@ import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import { FontSizeExtension } from "@/app/extensions/font-size";
+import { LineHeightExtension } from "@/app/extensions/line-height";
 import { useEditorState } from "@/store/use-editor-store";
-const Editor = () => {
-  // useEditor 是 Tiptap 提供的 React Hook，用于 --> 创建编辑器实例
+import { Ruler } from "./ruler";
+import { Threads } from "./threads";
+import { useStorage } from "@liveblocks/react/suspense";
+import { LEFT_MARGIN_DEFUALT, RIGHT_MARGIN_DEFUALT } from "@/constants/margin";
+
+interface EditorProps {
+  initialContent?: string | undefined;
+}
+
+const Editor = ({ initialContent }: EditorProps) => {
+  const leftMargin = useStorage((root) => root.leftMargin);
+  const rightMargin = useStorage((root) => root.rightMargin);
+  const liveblocks = useLiveblocksExtension({
+    initialContent,
+    offlineSupport_experimental: true
+  });
   const { setEditor } = useEditorState();
+
+  // useEditor 是 Tiptap 提供的 React Hook，用于 --> 创建编辑器实例
   const editor = useEditor({
+    immediatelyRender: false,
     onCreate({ editor }) {
       setEditor(editor);
     },
@@ -51,14 +69,21 @@ const Editor = () => {
     editorProps: {
       // 直接映射到编辑区域的属性（DOM props）
       attributes: {
-        style: "padding-left:56px;padding-right:56px", // 内联样式
+        style: `padding-left:${leftMargin ?? LEFT_MARGIN_DEFUALT}px;padding-right:${rightMargin ?? RIGHT_MARGIN_DEFUALT}px`, // 内联样式
         // 类名
         class:
           "focus:outline-none bg-white border border-[#C7C7C7] print:border-0 flex flex-col min-h-[1054px] w-[816px] pt-5 pr-14 pb-10 cursor-text",
       },
     },
     extensions: [
-      StarterKit,
+      liveblocks,
+      StarterKit.configure({
+        history: false
+      }),
+      LineHeightExtension.configure({
+        types: ["heading", "paragraph"],
+        defaultLineHeight: "normal",
+      }),
       FontSizeExtension,
       TextAlign.configure({
         types: ["heading", "paragraph"],
@@ -91,8 +116,10 @@ const Editor = () => {
 
   return (
     <div className="size-full overflow-x-auto bg-[#F9FBFD] px-4 print:p-0 print:bg-white print:overflow-visible ">
+      <Ruler />
       <div className="min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
         <EditorContent editor={editor} />
+        <Threads editor={editor} />
       </div>
     </div>
   );

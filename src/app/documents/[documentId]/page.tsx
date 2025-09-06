@@ -1,15 +1,28 @@
-import Editor from "./editor";
-import { Toolbar } from "./toolbar";
-// interface DocumentIdPageProps {
-//   params: Promise<{ documentId: string }>;
-// }
+import { auth } from "@clerk/nextjs/server";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { Document } from "./document";
+import { preloadQuery } from "convex/nextjs";
+import { api } from "../../../../convex/_generated/api";
 
-const DocumentIdPage = async () => {
+interface DocumentIdPageProps {
+  params: Promise<{ documentId: Id<"documents"> }>;
+}
+
+const DocumentIdPage = async ({ params }: DocumentIdPageProps) => {
+  const { documentId } = await params;
+  const { getToken } = await auth();
+  const token = await getToken({ template: "convex" }) ?? undefined;
+  if (!token) {
+    throw new Error("Unauthorized");
+  }
+  const preloadDocument = await preloadQuery(
+    api.documents.getById,
+    { id: documentId },
+    { token }
+  );
+
   return (
-    <div className="min-h-screen bg-[#FAFBFD]">
-      <Toolbar />
-      <Editor />
-    </div>
+    <Document preloadedDocument={preloadDocument} />
   );
 };
 
