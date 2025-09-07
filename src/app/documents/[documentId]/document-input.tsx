@@ -22,6 +22,7 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
     const showError = status === "disconnected";
     const inputRef = useRef<HTMLInputElement>(null);
     const mutate = useMutation(api.documents.renameById);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const debouncedUpdate = useDebounce((newValue: string) => {
         if (newValue === title) return;
         setIsPending(true);
