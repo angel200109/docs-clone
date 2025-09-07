@@ -2,12 +2,10 @@
   "root": true,
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
   "rules": {
-    "semi": ["error", "always"],
+    "semi": ["error", "never"],
     "quotes": ["error", "double"],
     "prefer-arrow-callback": ["error"],
     "prefer-template": ["error"],
-    "rules": {
-      "no-unused-vars": "off"
-    }
+    "no-unused-vars": "off"
   }
 }

@@ -40,6 +40,7 @@ const Editor = ({ initialContent }: EditorProps) => {
 
   // useEditor 是 Tiptap 提供的 React Hook，用于 --> 创建编辑器实例
   const editor = useEditor({
+    autofocus: true,
     immediatelyRender: false,
     onCreate({ editor }) {
       setEditor(editor);
